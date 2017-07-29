@@ -45,6 +45,7 @@ export default class ComCam extends Component {
           }}
                     orientation={Camera.constants.Orientation.auto }
                     style={styles.preview}
+                    captureTarget={Camera.constants.CaptureTarget.memory}
                     aspect={Camera.constants.Aspect.fill}>
                     <Button
                         style={styles.capture}
@@ -66,19 +67,16 @@ export default class ComCam extends Component {
         //options.location = ...
         this.setLoading(true)
         this.camera.capture({metadata: options})
-            .then((data) => {
+            .then((img) => {
+                const imgAs64Bit = img.data
                 this.setLoading(false)
-                CameraRoll.getPhotos({first: 1})
-                    .then((res) => {
-                        console.log('111 data', data)
-                        console.log('111 res', res)
-                        ToastAndroid.show('files from camera rolll ' + JSON.stringify(res), 0)
-                    })
-                .catch((e) => {
-                        ToastAndroid.show('Error while getting photos ' + e.message, 0)
-                    })
+                CameraRoll.getPhotos({first: 1}).then( (imageGroup)=> {
 
-                //this.onNext(data)
+                    ToastAndroid.show('Bit data type ' + typeof imgAs64Bit, 0)
+                    //this.onNext(imageGroup && imageGroup.edges[0] && imageGroup.edges[0].node && imageGroup.edges[0].node.image.uri)
+
+                    this.onNext(imgAs64Bit)
+                })
             })
             .catch(err => {
                 this.setLoading(false)

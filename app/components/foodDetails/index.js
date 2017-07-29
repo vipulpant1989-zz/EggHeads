@@ -161,13 +161,15 @@ export default class FoodDetails extends Component {
         const {showLoading} = this.state;
         const { imageData} = this.props;
 
+        const updatedImageData = `data:image/jpg;base64,${imageData}`
+        console.log('111 updatedImageData', updatedImageData)
         return (
             <View style={styles.wrapper}>
                 <ScrollView style={styles.container}>
                     {showLoading && <Text>Loading</Text>}
                     {imageData && <Image
                         style={styles.image}
-                        source={{uri: imageData.path}}
+                        source={{uri: updatedImageData}}
                         />}
                     <View>
                         {this.renderNutritionValue()}
