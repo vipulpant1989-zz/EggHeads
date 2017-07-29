@@ -7,42 +7,81 @@ import {
   Text,
   TouchableHighlight,
   View,
-  Button
+  Button,
+  ToastAndroid,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import Camera from 'react-native-camera';
 
 
 export default class ComCam extends Component {
 
+  constructor(p) {
+    super(p);
+    this.state = {
+      showLoading: false
+    }
+    this.onNext = this.onNext.bind(this);
+  }
+
+  setLoading(showLoading){
+    this.setState({showLoading})
+  }
+
+  onNext(data){
+            this.props.setActiveView(2,data)
+            
+  }
+
   render() {
+    const {showLoading} = this.state;
     return (
+        <View style={styles.wrapper}>
         <Camera
           ref={(cam) => {
             this.camera = cam;
           }}
+          orientation={Camera.constants.Orientation.auto }
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>
+         
+         
           <Button
             style={styles.capture}
             onPress={this.takePicture.bind(this)}
-            title="Detect"
+            title={showLoading? 'Saving...':'Detect'}
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
+            disabled={showLoading}
           />
         </Camera>
+                </View>
+
+
     );
   }
 
   takePicture() {
     const options = {};
     //options.location = ...
+    this.setLoading(true)
     this.camera.capture({metadata: options})
-      .then((data) => console.log(data))
-      .catch(err => console.error(err));
+      .then((data) => {
+        this.setLoading(false)
+        this.onNext(data)
+            })
+      .catch(err => {
+        this.setLoading(false)
+        ToastAndroid.show('Error while saving image '+err.message, ToastAndroid.SHORT)
+        console.error(err)});
   }
 }
 
 const styles = StyleSheet.create({
+wrapper:{
+  flex:1
+},
   container: {
     flex: 1,
     flexDirection: 'row',

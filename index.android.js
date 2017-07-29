@@ -18,10 +18,12 @@ import {
 } from 'react-native';
 import Camera from 'react-native-camera';
 
+import App from './app/app.js'
 
 export default class HealthVision extends Component {
 
   render() {
+  return <App/>
     return (
         <Camera
           ref={(cam) => {
