@@ -55,7 +55,7 @@ export default class App extends Component {
   render() {
     return (
        <View style={styles.container}>
-       <Text style={styles.title}>Health Vision</Text>
+           <View style={styles.titleContainer}><Text style={styles.title}>Health Vision</Text></View>
          {this.renderActiveView()}
        </View>
     );
@@ -67,9 +67,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1 
- },
+ },titleContainer:{padding: 5},
   title: {
-      color:'blue',
-      textAlign: 'center'
+      fontWeight: 'bold', fontSize: 16, color: '#841584', textAlign: 'center'
     }
 });
