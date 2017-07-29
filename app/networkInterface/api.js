@@ -39,7 +39,7 @@ const nutritionValue ={
 }
 
 export const fetchNutritionInfo = (foodName) => {
-    return call(`http://www.google.co.in?foodName=${foodName}`).then( (res) => {
+    return call(`http://localhost:8080/nutrition/${foodName}`).then( (res) => {
         return nutritionValue.foods
     }).catch( (e) => {
 

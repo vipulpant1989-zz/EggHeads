@@ -57,10 +57,10 @@ fastlane/screenshots
 /ios
 
 /VisionI/negative_images
-/VisionI/positive_images
-/VisionI/samples
-/VisionI/target
-/VisionI/negatives.txt
-/VisionI/positives.txt
-/VisionI/samples.vec
-/**/*.iml
+VisionI/positive_images
+VisionI/samples
+VisionI/target
+VisionI/negatives.txt
+VisionI/positives.txt
+VisionI/samples.vec
+**/*.iml

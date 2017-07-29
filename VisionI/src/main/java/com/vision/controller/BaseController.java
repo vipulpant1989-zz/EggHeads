@@ -21,10 +21,15 @@ public class BaseController {
     @Autowired
     INutritionSearch nutritionSearch ;
 
-
+    @RequestMapping(value = "/")
+    public String getApiInfo(){
+        return "{version : 1.0.0 , name : 'Heath Vision API'}";
+    }
     @RequestMapping(value = "/nutrition/{itemName}" ,method = RequestMethod.GET , consumes = MediaType.APPLICATION_JSON_VALUE , produces =  MediaType.APPLICATION_JSON_VALUE)
-    public List<Food> getNutritionSearch(@PathVariable("itemName") String itemName){
-          return nutritionSearch.searchByName(itemName);
+    public String getNutritionSearch(@PathVariable String itemName){
+        System.out.println("ITEMS ======================= " + itemName);
+
+        return nutritionSearch.getByName(itemName);
     }
 
 
