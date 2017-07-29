@@ -14,6 +14,7 @@ import {
     Image
 } from 'react-native';
 import Camera from 'react-native-camera';
+import {getFruitName} from '../../networkInterface/api.js'
 
 
 export default class ComCam extends Component {
@@ -70,13 +71,8 @@ export default class ComCam extends Component {
             .then((img) => {
                 const imgAs64Bit = img.data
                 this.setLoading(false)
-                CameraRoll.getPhotos({first: 1}).then( (imageGroup)=> {
-
-                    ToastAndroid.show('Bit data type ' + typeof imgAs64Bit, 0)
-                    //this.onNext(imageGroup && imageGroup.edges[0] && imageGroup.edges[0].node && imageGroup.edges[0].node.image.uri)
-
-                    this.onNext(imgAs64Bit)
-                })
+                this.onNext(imgAs64Bit)
+                //todo vipul implementation pending ---  getFruitName(imgAs64Bit)
             })
             .catch(err => {
                 this.setLoading(false)

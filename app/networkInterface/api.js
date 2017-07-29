@@ -47,6 +47,15 @@ export const fetchNutritionInfo = (foodName) => {
 
 }
 
+export const getFruitName = (fruitEncodedData) => {
+    return call(`http://www.google.co.in?foodName=${fruitEncodedData}`).then( (res) => {
+        console.log(' res ', res)
+    }).catch( (e) => {
+
+    })
+
+}
+
 function call(url) {
     return fetch(url,{
         method: 'POST',
@@ -60,3 +69,4 @@ function call(url) {
         throw e;
     })
 }
+
