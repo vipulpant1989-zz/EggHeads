@@ -51,3 +51,7 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+
+#environmnet specific folders created by react-native link react-camera
+/android
+/ios
