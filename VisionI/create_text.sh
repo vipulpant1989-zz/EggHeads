@@ -1,0 +1,1 @@
+ find ./positive_images -iname "*.*" > positives.txt && find ./negative_images -iname "*.*" > negatives.txt

@@ -1,0 +1,1 @@
+python ./tools/mergevec.py -v samples/ -o samples.vec
