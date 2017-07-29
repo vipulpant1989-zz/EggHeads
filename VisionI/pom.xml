@@ -11,6 +11,10 @@
     <groupId>com.dietry</groupId>
     <artifactId>Vision</artifactId>
     <version>1.0</version>
+    <properties>
+        <full-artifact-name>target/${project.build.finalName}.jar</full-artifact-name>
+    </properties>
+    <packaging>jar</packaging>
     <build>
         <finalName>health-app</finalName>
         <resources>
@@ -50,14 +54,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <!--<configuration>
-                    <jvmArguments>
-                        -Djava.library.path=/usr/local/opt/opencv3/share/OpenCV/java/
-                    </jvmArguments>
-                </configuration>-->
-                <!--<configuration>
-
-                </configuration>-->
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -70,8 +66,6 @@
             </plugin>
         </plugins>
     </build>
-
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -92,6 +86,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.14.4</version>
@@ -105,19 +108,31 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-support</artifactId>
+            <version>2.0.8</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/nu.pattern/opencv -->
         <dependency>
             <groupId>nu.pattern</groupId>
             <artifactId>opencv</artifactId>
             <version>2.4.9-7</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-io -->
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20170516</version>
+        </dependency>
+
     </dependencies>
 
     <!-- Add Spring repositories -->
@@ -145,5 +160,55 @@
             <url>http://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
-
+    <profiles>
+        <profile>
+            <id>heroku</id>
+            <activation>
+                <property>
+                    <name>heroku</name>
+                </property>
+            </activation>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/main/resources</directory>
+                    </resource>
+                    <resource>
+                        <directory>src/main/webapp</directory>
+                        <filtering>true</filtering>
+                        <excludes>
+                            <exclude>WEB-INF/node_modules/**</exclude>
+                            <exclude>WEB-INF/node/**</exclude>
+                        </excludes>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        <groupId>com.heroku.sdk</groupId>
+                        <artifactId>heroku-maven-plugin</artifactId>
+                        <version>1.1.1</version>
+                        <configuration>
+                            <appName>health-vision</appName>
+                            <includeTarget>false</includeTarget>
+                            <includes>
+                                <include>${full-artifact-name}</include>
+                            </includes>
+                            <jdkVersion>1.8</jdkVersion>
+                            <processTypes>
+                                <web>java $JAVA_OPTS -Dserver.port=$PORT -jar target/health-app.jar --spring.profiles.active=heroku</web><!-- -->
+                            </processTypes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
