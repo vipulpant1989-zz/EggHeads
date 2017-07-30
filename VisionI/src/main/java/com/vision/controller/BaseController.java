@@ -15,7 +15,7 @@ import java.util.List;
  * Created by vipul.pant on 7/29/17.
  */
 
-@RestController
+@RestController("/api")
 public class BaseController {
 
     @Autowired

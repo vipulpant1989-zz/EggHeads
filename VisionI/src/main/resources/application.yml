@@ -4,3 +4,12 @@ spring:
 
 server:
  port: 8060
+
+spring:
+ mvc:
+  cors:
+   alllow-credentials: false
+   allowed-headers: *
+   allowed-methods: GET, POST
+   allowed-origins: *
+   max-age: 3600
