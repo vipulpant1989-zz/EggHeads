@@ -1,6 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import {
+    ProgressBar,
     StyleSheet,
     Text,
     TouchableHighlight,
@@ -40,7 +41,7 @@ export default class FoodDetails extends Component {
     componentDidMount() {
         const fruitName = this.props.fruitName
         this.setLoading(true)
-        fetchNutritionInfo(fruitName)
+        fruitName && fetchNutritionInfo(fruitName)
             .then((foodsNutritionValue) => {
                 this.setLoading(false)
                 this.setState({foodsNutritionValue})
@@ -69,7 +70,7 @@ export default class FoodDetails extends Component {
             val && nuts.push(
                 <View key={curNut} style={styles.nutsInfo}>
                     <Text style={styles.nutsKey}>{curNut}</Text>
-                    <Text style={styles.nutsValue}>{`${val} ${(unit) ? unit :' '}`}</Text>
+                    <Text style={styles.nutsValue}>{`${val} ${(unit) ? unit : ' '}`}</Text>
                 </View>
             )
         }
@@ -83,43 +84,44 @@ export default class FoodDetails extends Component {
         const {foodsNutritionValue} = this.state;
         const totalCalories = foodsNutritionValue && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal.val
         return totalCalories && !isNaN(totalCalories) && (
-            <View style={styles.burnCalContainer}>
-                <View style={styles.burnCalTitleContainer}>
-                    <Text style={styles.burnCalTitle}>How long would it take to burn off {totalCalories} KCal?</Text>
-                </View>
+                <View style={styles.burnCalContainer}>
+                    <View style={styles.burnCalTitleContainer}>
+                        <Text style={styles.burnCalTitle}>How long would it take to burn off {totalCalories}
+                            KCal?</Text>
+                    </View>
 
-                <View style={styles.nutsInfo}>
-                    <Text style={styles.nutsKey}>Walking(3 kmph)</Text>
-                    <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.walking)} Minutes</Text>
-                </View>
+                    <View style={styles.nutsInfo}>
+                        <Text style={styles.nutsKey}>Walking(3 kmph)</Text>
+                        <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.walking)}
+                            Minutes</Text>
+                    </View>
 
-                <View style={styles.nutsInfo}>
-                    <Text style={styles.nutsKey}>Running (6mph)</Text>
-                    <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.running)} Minutes</Text>
-                </View>
+                    <View style={styles.nutsInfo}>
+                        <Text style={styles.nutsKey}>Running (6mph)</Text>
+                        <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.running)}
+                            Minutes</Text>
+                    </View>
 
-                <View style={styles.nutsInfo}>
-                    <Text style={styles.nutsKey}>Bicycling (10mph)</Text>
-                    <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.bicycling)} Minutes</Text>
-                </View>
+                    <View style={styles.nutsInfo}>
+                        <Text style={styles.nutsKey}>Bicycling (10mph)</Text>
+                        <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.bicycling)}
+                            Minutes</Text>
+                    </View>
 
-            </View>
-        )
+                </View>
+            )
     }
 
     render() {
         const {showLoading} = this.state;
         const { imageData} = this.props;
 
-        const updatedImageData = `data:image/jpg;base64,${imageData}`
-        //console.log('111 updatedImageData', updatedImageData)
         return (
             <View style={styles.wrapper}>
                 <ScrollView style={styles.container}>
-                    {showLoading && <Text>Loading</Text>}
                     {imageData && <Image
                         style={styles.image}
-                        source={{uri: updatedImageData}}
+                        source={{uri: imageData}}
                         />}
                     <View>
                         {this.renderNutritionValue()}

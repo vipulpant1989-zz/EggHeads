@@ -31,8 +31,8 @@ export default class ComCam extends Component {
         this.setState({showLoading})
     }
 
-    onNext(data) {
-        this.props.setActiveView(2, data)
+    onNext(data, fruitName) {
+        this.props.setActiveView(2, data, fruitName)
 
     }
 
@@ -68,10 +68,13 @@ export default class ComCam extends Component {
         this.setLoading(true)
         this.camera.capture({metadata: options})
             .then((img) => {
-                const imgAs64Bit = img.data
+                const imgAs64Bit = `data:image/jpg;base64,${img.data}`
                 this.setLoading(false)
-                this.onNext(imgAs64Bit)
-                //todo vipul implementation pending ---  getFruitName(imgAs64Bit)
+                this.onNext(imgAs64Bit, 'apple')
+                //getFruitName(imgAs64Bit).then((fruitName) => {
+                //    //return this.onNext(imgAs64Bit, fruitName)
+                //})
+
             })
             .catch(err => {
                 this.setLoading(false)
