@@ -38,11 +38,12 @@ const nutritionValue = {
     ]
 }
 
-export const fetchNutritionInfo = (foodName = 'apple') => {
+export const fetchNutritionInfo = (foodName) => {
     return call(`https://health-vision.herokuapp.com/nutrition/${foodName}`, 'GET')
         .then((re)=>re.json())
         .then((res) => res).catch((e) => {
-            console.warn(' 111 error from nutrition info is ... ', e)
+            ToastAndroid.show(`Unable to found nutrition info for ${foodName}`,0);
+            //console.warn(' 111 error from nutrition info is ... ', e)
         })
 }
 

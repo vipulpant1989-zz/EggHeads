@@ -65,7 +65,6 @@ export default class ComCam extends Component {
 
     takePicture() {
         const options = {};
-        //options.location = ...
         this.setLoading(true)
         this.camera.capture({metadata: options})
             .then((img) => {

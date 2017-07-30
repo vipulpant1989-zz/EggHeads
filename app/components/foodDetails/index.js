@@ -38,7 +38,7 @@ export default class FoodDetails extends Component {
     }
 
     componentDidMount() {
-        const fruitName = this.props.fruitName || 'Orange'
+        const fruitName = this.props.fruitName
         this.setLoading(true)
         fetchNutritionInfo(fruitName)
             .then((foodsNutritionValue) => {
@@ -58,10 +58,10 @@ export default class FoodDetails extends Component {
 
     renderNutritionValue() {
         const {foodsNutritionValue} = this.state;
-        const {food_name='FOOD_NAME_TO_BE_DETECTED'} = this.props;
+        const {fruitName} = this.props;
         const nuts = [
-            <View key={food_name} style={{borderWidth: 1, borderStyle: 'solid', padding:5, margin: 5}}>
-                <View style={styles.foodNameContainer}><Text style={styles.foodName}>{food_name}</Text></View>
+            <View key={fruitName} style={{borderWidth: 1, borderStyle: 'solid', padding:5, margin: 5}}>
+                <View style={styles.foodNameContainer}><Text style={styles.foodName}>{fruitName}</Text></View>
             </View>
         ];
         for (let curNut in foodsNutritionValue) {
@@ -81,7 +81,7 @@ export default class FoodDetails extends Component {
 
     renderBurnCalories() {
         const {foodsNutritionValue} = this.state;
-        const totalCalories = foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal.val
+        const totalCalories = foodsNutritionValue && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal.val
         return totalCalories && !isNaN(totalCalories) && (
             <View style={styles.burnCalContainer}>
                 <View style={styles.burnCalTitleContainer}>

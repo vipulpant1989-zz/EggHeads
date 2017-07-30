@@ -42,11 +42,9 @@ export default class App extends Component {
                 break; 
             }
             case 2: {
-                renderView = <FoodDetails imageData={imageData} setActiveView={this.setActiveView} />;
+                renderView = <FoodDetails fruitName={'Dragonfruit'} imageData={imageData} setActiveView={this.setActiveView} />;
                 break;
             }
-            
-
         }
         return renderView
 
