@@ -3,3 +3,4 @@ jdk: oraclejdk8
 before_script:cd VisionI/
 script: HEROKU_API_KEY="$HEROKU_API_KEY" cd VisionI mvn clean verify -Pheroku
 skip_cleanup : true
+
