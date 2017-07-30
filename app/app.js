@@ -19,21 +19,31 @@ export default class App extends Component {
         super(p);
         this.state = {
             activeView: 1,
-            imageData: undefined
+            imageData: undefined,
+            fruitName: undefined
         }
         this.setActiveView = this.setActiveView.bind(this)
     }
 
-    setActiveView(activeView, imageData){
+    setActiveView(activeView, imageData, fruitName){
+        if(fruitName === null ) {
+            return ;
+        }
         let updatedState = {activeView}
         if(imageData) {
             updatedState.imageData = imageData
         }
+
+
+        if(fruitName) {
+            updatedState.fruitName = fruitName
+        }
+
         this.setState(updatedState)
     }
 
     renderActiveView() {
-        const {activeView, imageData} = this.state;
+        const {activeView, imageData, fruitName} = this.state;
         let renderView = null;
 
         switch(activeView){
@@ -42,11 +52,9 @@ export default class App extends Component {
                 break; 
             }
             case 2: {
-                renderView = <FoodDetails imageData={imageData} setActiveView={this.setActiveView} />;
+                renderView = <FoodDetails fruitName={fruitName} imageData={imageData} setActiveView={this.setActiveView} />;
                 break;
             }
-            
-
         }
         return renderView
 
