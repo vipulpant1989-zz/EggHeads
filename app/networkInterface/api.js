@@ -2,7 +2,7 @@ import {
     ToastAndroid,
 } from 'react-native';
 
-const nutritionValue ={
+const nutritionValue = {
     "foods": [
         {
             "food_name": "Orange",
@@ -19,7 +19,7 @@ const nutritionValue ={
             "nf_sugars": 11.9,
             "nf_protein": 1.27,
             "nf_potassium": 232.4
-        },{
+        }, {
             "food_name": "Apple",
             "serving_qty": 1,
             "serving_unit": "fruit (2-7/8\" dia)",
@@ -38,34 +38,33 @@ const nutritionValue ={
     ]
 }
 
-export const fetchNutritionInfo = (foodName) => {
-    return call(`http://localhost:8080/nutrition/${foodName}`).then( (res) => {
-        return nutritionValue.foods
-    }).catch( (e) => {
-
-    })
-
+export const fetchNutritionInfo = (foodName = 'apple') => {
+    return call(`https://health-vision.herokuapp.com/nutrition/${foodName}`, 'GET')
+        .then((re)=>re.json())
+        .then((res) => res).catch((e) => {
+            console.warn(' 111 error from nutrition info is ... ', e)
+        })
 }
 
 export const getFruitName = (fruitEncodedData) => {
-    return call(`http://www.google.co.in?foodName=${fruitEncodedData}`).then( (res) => {
+    return call(`http://www.google.co.in?foodName=${fruitEncodedData}`).then((res) => {
         console.log(' res ', res)
-    }).catch( (e) => {
+    }).catch((e) => {
 
     })
 
 }
 
-function call(url) {
-    return fetch(url,{
-        method: 'POST',
+function call(url, method = 'POST') {
+    return fetch(url, {
+        method,
         headers: {
             'Accept': 'application/json',
             'Content-type': 'application/json'
         }/*,
-        body: JSON.stringify({param: 'value'})*/
+         body: JSON.stringify({param: 'value'})*/
     }).catch((e) => {
-        ToastAndroid.show('Error '+e && e.message, ToastAndroid.SHORT)
+        ToastAndroid.show('Error ' + e && e.message, ToastAndroid.SHORT)
         throw e;
     })
 }

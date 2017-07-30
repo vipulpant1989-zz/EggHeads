@@ -51,7 +51,7 @@ export default class ComCam extends Component {
                     <Button
                         style={styles.capture}
                         onPress={this.takePicture.bind(this)}
-                        title={showLoading? 'Saving...':'Detect'}
+                        title={showLoading? 'Processing...':'Detect'}
                         color="#841584"
                         accessibilityLabel="Learn more about this purple button"
                         disabled={showLoading}

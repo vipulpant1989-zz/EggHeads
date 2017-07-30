@@ -32,7 +32,7 @@ export default class FoodDetails extends Component {
         super(p);
         this.state = {
             showLoading: false,
-            foodsNutritionValue: []
+            foodsNutritionValue: {}
         }
         this.onPrev = this.onPrev.bind(this);
     }
@@ -58,80 +58,31 @@ export default class FoodDetails extends Component {
 
     renderNutritionValue() {
         const {foodsNutritionValue} = this.state;
-        const nuts = foodsNutritionValue.map(({
-            food_name, serving_qty, serving_unit ,serving_weight_grams, nf_calories, nf_total_fat, nf_saturated_fat,
-            nf_cholesterol, nf_sodium, nf_total_carbohydrate, nf_dietary_fiber, nf_sugars, nf_protein, nf_potassium
-            }, index) => {
-            return (
-                <View key={food_name} style={{borderWidth: 1, borderStyle: 'solid', padding:5, margin: 5}}>
-                    <View style={styles.foodNameContainer}><Text style={styles.foodName}>{food_name}</Text></View>
-
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Serving qty</Text>
-                        <Text style={styles.nutsValue}>{serving_qty}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Serving unit</Text>
-                        <Text style={styles.nutsValue}>{serving_unit}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Serving weight in gms</Text>
-                        <Text style={styles.nutsValue}>{serving_weight_grams}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Calories</Text>
-                        <Text style={styles.nutsValue}>{nf_calories}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Total fat</Text>
-                        <Text style={styles.nutsValue}>{nf_total_fat}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Saturated fat</Text>
-                        <Text style={styles.nutsValue}>{nf_saturated_fat}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Cholestrol</Text>
-                        <Text style={styles.nutsValue}>{nf_cholesterol}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Sodium</Text>
-                        <Text style={styles.nutsValue}>{nf_sodium}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Total Carbs</Text>
-                        <Text style={styles.nutsValue}>{nf_total_carbohydrate}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Dietary Fiber</Text>
-                        <Text style={styles.nutsValue}>{nf_dietary_fiber}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Sugar</Text>
-                        <Text style={styles.nutsValue}>{nf_sugars}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Protein</Text>
-                        <Text style={styles.nutsValue}>{nf_protein}</Text>
-                    </View>
-                    <View style={styles.nutsInfo}>
-                        <Text style={styles.nutsKey}>Potassium</Text>
-                        <Text style={styles.nutsValue}>{nf_potassium}</Text>
-                    </View>
-
+        const {food_name='FOOD_NAME_TO_BE_DETECTED'} = this.props;
+        const nuts = [
+            <View key={food_name} style={{borderWidth: 1, borderStyle: 'solid', padding:5, margin: 5}}>
+                <View style={styles.foodNameContainer}><Text style={styles.foodName}>{food_name}</Text></View>
+            </View>
+        ];
+        for (let curNut in foodsNutritionValue) {
+            var {val, unit} = foodsNutritionValue[curNut]
+            val && nuts.push(
+                <View key={curNut} style={styles.nutsInfo}>
+                    <Text style={styles.nutsKey}>{curNut}</Text>
+                    <Text style={styles.nutsValue}>{`${val} ${(unit) ? unit :' '}`}</Text>
                 </View>
             )
-        });
+        }
         return <View style={styles.nutsContainer}>
             <View ><Text style={styles.title}>Nutrition facts</Text></View>
-            {nuts}
+            {nuts ? nuts : null}
         </View>
     }
 
     renderBurnCalories() {
         const {foodsNutritionValue} = this.state;
-        const totalCalories = foodsNutritionValue.reduce((sum, {nf_calories}) => sum + nf_calories, 0)
-        return (
+        const totalCalories = foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal && foodsNutritionValue.energyKcal.val
+        return totalCalories && !isNaN(totalCalories) && (
             <View style={styles.burnCalContainer}>
                 <View style={styles.burnCalTitleContainer}>
                     <Text style={styles.burnCalTitle}>How long would it take to burn off {totalCalories} KCal?</Text>
@@ -149,8 +100,7 @@ export default class FoodDetails extends Component {
 
                 <View style={styles.nutsInfo}>
                     <Text style={styles.nutsKey}>Bicycling (10mph)</Text>
-                    <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.bicycling)}
-                        Minutes</Text>
+                    <Text style={styles.nutsValue}>{Math.floor(totalCalories / 1000 * BURN_REF.bicycling)} Minutes</Text>
                 </View>
 
             </View>
@@ -162,7 +112,7 @@ export default class FoodDetails extends Component {
         const { imageData} = this.props;
 
         const updatedImageData = `data:image/jpg;base64,${imageData}`
-        console.log('111 updatedImageData', updatedImageData)
+        //console.log('111 updatedImageData', updatedImageData)
         return (
             <View style={styles.wrapper}>
                 <ScrollView style={styles.container}>
